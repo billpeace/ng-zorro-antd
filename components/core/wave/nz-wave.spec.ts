@@ -11,25 +11,19 @@ const EXTRA_NODE_CLASS_NAME = '.ant-click-animating-node';
 describe('nz-wave', () => {
   let fixture: ComponentFixture<WaveContainerWithButtonComponent | WaveContainerWithExtraNodeComponent>;
   let waveTarget: HTMLElement;
-  let waveDirective: NzWaveDirective;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NzWaveModule],
-      declarations: [
-        WaveContainerWithButtonComponent,
-        WaveContainerWithExtraNodeComponent
-      ]
+      declarations: [WaveContainerWithButtonComponent, WaveContainerWithExtraNodeComponent]
     });
   });
 
   describe('basic wave', () => {
-
     beforeEach(() => {
       fixture = TestBed.createComponent(WaveContainerWithButtonComponent);
       fixture.detectChanges();
       waveTarget = fixture.componentInstance.trigger.nativeElement;
-      waveDirective = fixture.componentInstance.wave;
     });
 
     it('should create wave on click', () => {
@@ -85,7 +79,7 @@ describe('nz-wave', () => {
       fixture.componentInstance.backgroundColor = 'rgb(255, 0, 0)';
       fixture.detectChanges();
       dispatchMouseEvent(waveTarget, 'click');
-      const style: string = document.body.querySelector('style').innerText;
+      const style: string = document.body.querySelector('style')!.innerText;
       expect(style.includes(fixture.componentInstance.borderColor)).toBe(true);
     });
 
@@ -109,12 +103,10 @@ describe('nz-wave', () => {
   });
 
   describe('extra node wave', () => {
-
     beforeEach(() => {
       fixture = TestBed.createComponent(WaveContainerWithExtraNodeComponent);
       fixture.detectChanges();
       waveTarget = fixture.componentInstance.trigger.nativeElement;
-      waveDirective = fixture.componentInstance.wave;
     });
 
     it('should create wave on click', () => {
@@ -154,7 +146,7 @@ describe('nz-wave', () => {
       fixture.componentInstance.backgroundColor = 'rgb(255, 0, 0)';
       fixture.detectChanges();
       dispatchMouseEvent(waveTarget, 'click');
-      const style: string = document.body.querySelector('style').innerText;
+      const style: string = document.body.querySelector('style')!.innerText;
       expect(style.includes(fixture.componentInstance.borderColor)).toBe(true);
     });
 
@@ -176,25 +168,23 @@ describe('nz-wave', () => {
 
       expect(document.body.querySelector('style') !== null).toBe(false);
       expect(waveTarget.querySelector(EXTRA_NODE_CLASS_NAME) !== null).toBe(false);
-
     });
-
   });
-
 });
 
 @Component({
   template: `
-  <button
-    #trigger
-    nz-wave
-    *ngIf="!isDestroyed"
-    [disabled]="disabled"
-    [class.disabled]="disabledClass"
-    [style.border-color]="borderColor"
-    [style.background-color]="backgroundColor">
-    Button
-  </button>
+    <button
+      #trigger
+      nz-wave
+      *ngIf="!isDestroyed"
+      [disabled]="disabled"
+      [class.disabled]="disabledClass"
+      [style.border-color]="borderColor"
+      [style.background-color]="backgroundColor"
+    >
+      Button
+    </button>
   `
 })
 class WaveContainerWithButtonComponent {
@@ -209,16 +199,17 @@ class WaveContainerWithButtonComponent {
 
 @Component({
   template: `
-  <div
-    #trigger
-    nz-wave
-    *ngIf="!isDestroyed"
-    [nzWaveExtraNode]="true"
-    [class.disabled]="disabledClass"
-    [style.border-color]="borderColor"
-    [style.background-color]="backgroundColor">
-    <button>Button</button>
-  </div>
+    <div
+      #trigger
+      nz-wave
+      *ngIf="!isDestroyed"
+      [nzWaveExtraNode]="true"
+      [class.disabled]="disabledClass"
+      [style.border-color]="borderColor"
+      [style.background-color]="backgroundColor"
+    >
+      <button>Button</button>
+    </div>
   `
 })
 class WaveContainerWithExtraNodeComponent {

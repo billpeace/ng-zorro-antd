@@ -15,6 +15,8 @@ import { NzCarouselModule } from './carousel/nz-carousel.module';
 import { NzCascaderModule } from './cascader/nz-cascader.module';
 import { NzCheckboxModule } from './checkbox/nz-checkbox.module';
 import { NzCollapseModule } from './collapse/nz-collapse.module';
+import { NzCommentModule } from './comment/nz-comment.module';
+import { NzNoAnimationModule } from './core/no-animation/nz-no-animation.module';
 import { NzWaveModule } from './core/wave/nz-wave.module';
 import { NzDatePickerModule } from './date-picker/date-picker.module';
 import { NzDividerModule } from './divider/nz-divider.module';
@@ -34,6 +36,7 @@ import { NzMenuModule } from './menu/nz-menu.module';
 import { NzMessageModule } from './message/nz-message.module';
 import { NzModalModule } from './modal/nz-modal.module';
 import { NzNotificationModule } from './notification/nz-notification.module';
+import { NzPageHeaderModule } from './page-header/nz-page-header.module';
 import { NzPaginationModule } from './pagination/nz-pagination.module';
 import { NzPopconfirmModule } from './popconfirm/nz-popconfirm.module';
 import { NzPopoverModule } from './popover/nz-popover.module';
@@ -44,6 +47,7 @@ import { NzSelectModule } from './select/nz-select.module';
 import { NzSkeletonModule } from './skeleton/nz-skeleton.module';
 import { NzSliderModule } from './slider/nz-slider.module';
 import { NzSpinModule } from './spin/nz-spin.module';
+import { NzStatisticModule } from './statistic/nz-statistic.module';
 import { NzStepsModule } from './steps/nz-steps.module';
 import { NzSwitchModule } from './switch/nz-switch.module';
 import { NzTableModule } from './table/nz-table.module';
@@ -70,6 +74,7 @@ export * from './card';
 export * from './carousel';
 export * from './checkbox';
 export * from './collapse';
+export * from './comment';
 export * from './date-picker';
 export * from './divider';
 export * from './drawer';
@@ -86,12 +91,14 @@ export * from './layout';
 export * from './list';
 export * from './mention';
 export * from './menu';
+export * from './page-header';
 export * from './pagination';
 export * from './progress';
 export * from './radio';
 export * from './rate';
 export * from './select';
 export * from './spin';
+export * from './statistic';
 export * from './steps';
 export * from './switch';
 export * from './table';
@@ -117,6 +124,7 @@ export * from './time-picker';
 export * from './version';
 export * from './core/wave';
 export * from './core/util';
+export * from './core/no-animation';
 
 @NgModule({
   exports: [
@@ -143,6 +151,7 @@ export * from './core/util';
     NzRadioModule,
     NzAlertModule,
     NzSpinModule,
+    NzPageHeaderModule,
     NzProgressModule,
     NzTabsModule,
     NzIconModule,
@@ -152,6 +161,7 @@ export * from './core/util';
     NzTransferModule,
     NzCarouselModule,
     NzCollapseModule,
+    NzCommentModule,
     NzTableModule,
     NzDatePickerModule,
     NzDividerModule,
@@ -174,7 +184,9 @@ export * from './core/util';
     NzTreeSelectModule,
     NzTimePickerModule,
     NzWaveModule,
+    NzNoAnimationModule,
     NzSkeletonModule,
+    NzStatisticModule,
     NzEmptyModule
   ]
 })

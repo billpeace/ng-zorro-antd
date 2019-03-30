@@ -1,26 +1,28 @@
-import { coerceBooleanProperty, coerceCssPixelValue, coerceNumberProperty } from '@angular/cdk/coercion';
+import { coerceBooleanProperty, coerceCssPixelValue, _isNumberValue } from '@angular/cdk/coercion';
 import { FunctionProp } from '../types/common-wrap';
 
 export function toBoolean(value: boolean | string): boolean {
   return coerceBooleanProperty(value);
 }
 
-export function toNumber<D>(value: number | string, fallback: D): number | D {
-  return coerceNumberProperty(value, fallback);
+export function toNumber(value: number | string): number;
+export function toNumber<D>(value: number | string, fallback: D): number | D;
+export function toNumber(value: number | string, fallbackValue: number = 0): number {
+  return _isNumberValue(value) ? Number(value) : fallbackValue;
 }
 
 export function toCssPixel(value: number | string): string {
   return coerceCssPixelValue(value);
 }
 
-// Get the funciton-property type's value
-export function valueFunctionProp<T>(prop: FunctionProp<T>, ...args: any[]): T { // tslint:disable-line: no-any
+// Get the function-property type's value
+export function valueFunctionProp<T>(prop: FunctionProp<T>, ...args: any[]): T {
+  // tslint:disable-line: no-any
   return typeof prop === 'function' ? prop(...args) : prop;
 }
 
 // tslint:disable-next-line: no-any
 function propDecoratorFactory<T, D>(name: string, fallback: (v: T) => D): (target: any, propName: string) => void {
-
   // tslint:disable-next-line: no-any
   function propDecorator(target: any, propName: string): void {
     const privatePropName = `$$__${propName}`;
@@ -31,21 +33,20 @@ function propDecoratorFactory<T, D>(name: string, fallback: (v: T) => D): (targe
 
     Object.defineProperty(target, privatePropName, {
       configurable: true,
-      writable    : true
+      writable: true
     });
 
     Object.defineProperty(target, propName, {
       get(): string {
-        return this[ privatePropName ]; // tslint:disable-line:no-invalid-this
+        return this[privatePropName]; // tslint:disable-line:no-invalid-this
       },
       set(value: T): void {
-        this[ privatePropName ] = fallback(value); // tslint:disable-line:no-invalid-this
+        this[privatePropName] = fallback(value); // tslint:disable-line:no-invalid-this
       }
     });
   }
 
   return propDecorator;
-
 }
 
 /**
@@ -64,10 +65,17 @@ function propDecoratorFactory<T, D>(name: string, fallback: (v: T) => D): (targe
  * // __visible = false;
  * ```
  */
-export function InputBoolean(): any { // tslint:disable-line: no-any
+export function InputBoolean(): any {
+  // tslint:disable-line: no-any
   return propDecoratorFactory('InputBoolean', toBoolean);
 }
 
-export function InputCssPixel(): any { // tslint:disable-line: no-any
+export function InputCssPixel(): any {
+  // tslint:disable-line: no-any
   return propDecoratorFactory('InputCssPixel', toCssPixel);
+}
+
+export function InputNumber(): any {
+  // tslint:disable-line: no-any
+  return propDecoratorFactory('InputNumber', toNumber);
 }

@@ -17,18 +17,6 @@ title: Modal
 
 在弹出层Component中可以通过依赖注入`NzModalRef`方式直接获取模态框的组件实例，用于控制在弹出层组件中控制模态框行为。
 
-## 如何使用
-
-如果要修改全局默认配置，你可以设置提供商 `NZ_MODAL_CONFIG` 的值来修改。
-（如：在你的模块的`providers`中加入 `{ provide: NZ_MODAL_CONFIG, useValue: { autoBodyPadding: false }}`，`NZ_MODAL_CONFIG` 可以从 `ng-zorro-antd` 中导入）
-
-默认全局配置为：
-```js
-{
-  autoBodyPadding: true, // 是否自动给body加上padding及overflow来隐藏滚动条
-}
-```
-
 ## API
 
 ### NzModalService
@@ -44,13 +32,15 @@ title: Modal
 | nzClosable        | 是否显示右上角的关闭按钮。<i>确认框模式下该值无效（默认会被隐藏）</i> | `boolean` | `true` |
 | nzOkLoading       | 确定按钮 loading | `boolean` | `false` |
 | nzCancelLoading   | 取消按钮 loading | `boolean` | `false` |
+| nzOkDisabled      | 是否禁用确定按钮 | `boolean` | `false` |
+| nzCancelDisabled  | 是否禁用取消按钮 | `boolean` | `false` |
 | nzFooter          | 底部内容。<i>1. 仅在普通模式下有效。<br>2. 可通过传入 ModalButtonOptions 来最大程度自定义按钮（详见案例或下方说明）。<br>3. 当不需要底部时，可以设为 null</i> | string<br>TemplateRef<br>ModalButtonOptions | 默认的确定取消按钮 |
 | nzGetContainer    | 指定 Modal 挂载的 HTML 节点 | HTMLElement<br>() => HTMLElement| 默认容器 |
 | nzKeyboard        | 是否支持键盘esc关闭 | `boolean` | `true` |
 | nzMask            | 是否展示遮罩 | `boolean` | `true` |
 | nzMaskClosable    | 点击蒙层是否允许关闭 | `boolean` | `true` |
 | nzMaskStyle       | 遮罩样式 | `object` | - |
-| nzOkText          | 确认按钮文字。<i>设为 null 表示不显示取消按钮（若在普通模式下使用了 nzFooter 参数，则该值无效）</i> | `string` | 确定 |
+| nzOkText          | 确认按钮文字。<i>设为 null 表示不显示确认按钮（若在普通模式下使用了 nzFooter 参数，则该值无效）</i> | `string` | 确定 |
 | nzOkType          | 确认按钮类型。<i>与button的type类型值一致</i> | `string` | primary |
 | nzStyle           | 可用于设置浮层的样式，调整浮层位置等 | `object` | - |
 | nzTitle           | 标题。<i>留空表示不展示标题。TemplateRef的使用方法可参考案例</i> | string<br>TemplateRef | - |

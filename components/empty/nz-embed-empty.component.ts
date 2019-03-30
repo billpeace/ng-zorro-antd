@@ -1,4 +1,4 @@
-import { ComponentPortal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
+import { ComponentPortal, Portal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -9,30 +9,30 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
-  TemplateRef, Type,
+  TemplateRef,
+  Type,
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 
-import { simpleEmptyImage, NzEmptyCustomContent, NzEmptySize, NZ_EMPTY_COMPONENT_NAME } from './nz-empty.config';
-import { NzEmptyContentTypeError } from './nz-empty.error';
+import { simpleEmptyImage, NzEmptyCustomContent, NzEmptySize, NZ_EMPTY_COMPONENT_NAME } from './nz-empty-config';
 import { NzEmptyService } from './nz-empty.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation  : ViewEncapsulation.None,
-  selector       : 'nz-embed-empty',
-  templateUrl    : './nz-embed-empty.component.html'
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-embed-empty',
+  templateUrl: './nz-embed-empty.component.html'
 })
 export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzComponentName: string;
   @Input() specificContent: NzEmptyCustomContent;
 
-  content;
+  content?: NzEmptyCustomContent;
   contentType: 'component' | 'template' | 'string' = 'string';
-  contentPortal;
+  contentPortal?: Portal<any>; // tslint:disable-line:no-any
   defaultSvg = this.sanitizer.bypassSecurityTrustResourceUrl(simpleEmptyImage);
   size: NzEmptySize = '';
   subs_ = new Subscription();
@@ -43,8 +43,7 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
     private viewContainerRef: ViewContainerRef,
     private cdr: ChangeDetectorRef,
     private injector: Injector
-  ) {
-  }
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzComponentName) {
@@ -55,7 +54,7 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
       this.content = changes.specificContent.currentValue;
       this.renderEmpty();
     }
-   }
+  }
 
   ngOnInit(): void {
     const userContent_ = this.emptyService.userDefaultContent$.subscribe(content => {
@@ -88,21 +87,20 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
   private renderEmpty(): void {
     const content = this.content;
 
-    if (content === undefined || content === null) {
-      // Do nothing.
-    } else if (typeof content === 'string') {
+    if (typeof content === 'string') {
       this.contentType = 'string';
     } else if (content instanceof TemplateRef) {
       const context = { $implicit: this.nzComponentName } as any; // tslint:disable-line:no-any
       this.contentType = 'template';
       this.contentPortal = new TemplatePortal(content, this.viewContainerRef, context);
     } else if (content instanceof Type) {
-      const context = new WeakMap([ [ NZ_EMPTY_COMPONENT_NAME, this.nzComponentName ] ]);
+      const context = new WeakMap([[NZ_EMPTY_COMPONENT_NAME, this.nzComponentName]]);
       const injector = new PortalInjector(this.injector, context);
       this.contentType = 'component';
       this.contentPortal = new ComponentPortal(content, this.viewContainerRef, injector);
     } else {
-      throw NzEmptyContentTypeError(content);
+      this.contentType = 'string';
+      this.contentPortal = undefined;
     }
 
     this.cdr.markForCheck();

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { NzEmptyService } from 'ng-zorro-antd';
 
 @Component({
@@ -8,7 +8,8 @@ import { NzEmptyService } from 'ng-zorro-antd';
       [nzUnCheckedChildren]="'default'"
       [nzCheckedChildren]="'customize'"
       [(ngModel)]="customize"
-      (ngModelChange)="onConfigChange()">
+      (ngModelChange)="onConfigChange()"
+    >
     </nz-switch>
 
     <nz-divider></nz-divider>
@@ -20,7 +21,7 @@ import { NzEmptyService } from 'ng-zorro-antd';
     <nz-tree-select style="width: 200px;"></nz-tree-select>
 
     <h3>Cascader</h3>
-    <nz-cascader style="width: 200px;" [nzShowSearch]="true" [nzOptions]="options"></nz-cascader>
+    <nz-cascader style="width: 200px;" [nzShowSearch]="true" [nzOptions]="[]"></nz-cascader>
 
     <h3>Transfer</h3>
     <nz-transfer></nz-transfer>
@@ -28,10 +29,10 @@ import { NzEmptyService } from 'ng-zorro-antd';
     <h3>Table</h3>
     <nz-table>
       <thead>
-      <tr>
-        <th>Title</th>
-        <th>Age</th>
-      </tr>
+        <tr>
+          <th>Title</th>
+          <th>Age</th>
+        </tr>
       </thead>
     </nz-table>
 
@@ -45,50 +46,21 @@ import { NzEmptyService } from 'ng-zorro-antd';
       </div>
     </ng-template>
   `,
-  styles  : [ `h3 {
-    font-size: inherit;
-    margin: 16px 0 8px 0;
-  }`
+  styles: [
+    `
+      h3 {
+        font-size: inherit;
+        margin: 16px 0 8px 0;
+      }
+    `
   ]
 })
 export class NzDemoEmptyConfigComponent {
   @ViewChild('customTpl') customTpl: TemplateRef<any>; // tslint:disable-line:no-any
 
   customize = false;
-  options = [
-    {
-      value   : 'zhejiang',
-      label   : 'Zhejiang',
-      children: [ {
-        value   : 'hangzhou',
-        label   : 'Hangzhou',
-        children: [ {
-          value : 'xihu',
-          label : 'West Lake',
-          isLeaf: true
-        } ]
-      }, {
-        value : 'ningbo',
-        label : 'Ningbo',
-        isLeaf: true
-      } ]
-    }, {
-      value   : 'jiangsu',
-      label   : 'Jiangsu',
-      children: [ {
-        value   : 'nanjing',
-        label   : 'Nanjing',
-        children: [ {
-          value : 'zhonghuamen',
-          label : 'Zhong Hua Men',
-          isLeaf: true
-        } ]
-      } ]
-    }
-  ];
 
-  constructor(private nzEmptyService: NzEmptyService) {
-  }
+  constructor(private nzEmptyService: NzEmptyService) {}
 
   onConfigChange(): void {
     if (this.customize) {
